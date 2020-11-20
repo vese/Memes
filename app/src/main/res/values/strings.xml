@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Memes</string>
     <string name="splash_logo">Splash logo</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="log_in">Войти</string>
+    <string name="password_hint">Пароль должен содержать 6 символов</string>
 </resources>
