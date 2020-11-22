@@ -12,4 +12,5 @@
     <color name="active">#1EF0D7</color>
     <color name="background">#23213F</color>
     <color name="background2">#312F51</color>
+    <color name="secondary">#89FFFFFF</color>
 </resources>
