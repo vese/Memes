@@ -1,5 +1,6 @@
 package com.example.memes
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -17,6 +18,7 @@ import com.example.memes.network.NetworkService
 import com.example.memes.network.models.AuthResult
 import com.example.memes.network.models.Credentials
 import com.example.memes.network.models.ErrorResult
+import com.example.memes.repository.UserRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -111,6 +113,11 @@ class AuthActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<AuthResult?>, response: Response<AuthResult?>) {
                     if (response.isSuccessful) {
                         val result = response.body()
+                        if (result != null) {
+                            val repository = UserRepository(applicationContext)
+                            repository.saveUser(result)
+                            startActivity(Intent(applicationContext, TabsActivity::class.java))
+                        }
                     } else {
                         val errorResponse: ErrorResult? = Gson().fromJson(
                             response.errorBody()?.charStream(),
@@ -121,7 +128,7 @@ class AuthActivity : AppCompatActivity() {
                         errorTextView.visibility = View.VISIBLE
                         textView.visibility = View.VISIBLE
                     }
-                    spinner.visibility = View.INVISIBLE
+                    spinner.visibility = View.GONE
                     button.text = getString(R.string.log_in)
                 }
 
