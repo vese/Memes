@@ -5,4 +5,7 @@
     <string name="password">Пароль</string>
     <string name="log_in">Войти</string>
     <string name="password_hint">Пароль должен содержать 6 символов</string>
+    <string name="empty_field_error">Поле не может быть пустым</string>
+    <string name="password_visibility">Password visibility</string>
+    <string name="auth_error">Вы ввели неверные данные. Попробуйте еще раз</string>
 </resources>
