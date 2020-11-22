@@ -8,4 +8,8 @@
     <string name="empty_field_error">Поле не может быть пустым</string>
     <string name="password_visibility">Password visibility</string>
     <string name="auth_error">Во время запроса произошла ошибка, возможно вы неверно ввели логин/пароль</string>
+    <string name="title">Популярные мемы</string>
+    <string name="panels">panels</string>
+    <string name="add">add</string>
+    <string name="profile">profile</string>
 </resources>
