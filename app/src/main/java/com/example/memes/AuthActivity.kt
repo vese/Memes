@@ -135,7 +135,7 @@ class AuthActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<AuthResult?>, t: Throwable) {
                 }
             })
-        }, 1000)
+        }, this.resources.getInteger(R.integer.delay).toLong())
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
