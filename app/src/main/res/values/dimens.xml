@@ -1,3 +1,5 @@
 <resources>
     <dimen name="text_margin">16dp</dimen>
+    <integer name="splashDelay" format="integer" type="dimen">300</integer>
+    <integer name="delay" format="integer" type="dimen">300</integer>
 </resources>
