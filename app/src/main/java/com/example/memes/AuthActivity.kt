@@ -107,7 +107,7 @@ class AuthActivity : AppCompatActivity() {
         val handler = Handler()
         val credentials = Credentials()
         credentials.login = "qwerty" //loginInputText.text.toString()
-        credentials.password = passwordInputText.text.toString()
+        credentials.password = "qwerty" //passwordInputText.text.toString()
         handler.postDelayed({
             NetworkService.authClient.login(credentials)?.enqueue(object : Callback<AuthResult?> {
                 override fun onResponse(call: Call<AuthResult?>, response: Response<AuthResult?>) {

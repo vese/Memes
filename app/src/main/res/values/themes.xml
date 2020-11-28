@@ -20,5 +20,11 @@
         <item name="android:colorForeground">@color/white</item>
         <item name="helperTextColor">@color/white</item>
         <item name="secondaryColor">@color/secondary</item>
+
+        <item name="colorOnSurface">@color/item_icon_tint_selector</item>
+        <item name="bottomNavigationStyle">@style/Theme.Memes.BottomNavigationView</item>
+    </style>
+    <style name="Theme.Memes.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemIconTint">@color/item_icon_tint_selector</item>
     </style>
 </resources>
