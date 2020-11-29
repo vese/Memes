@@ -32,6 +32,9 @@ internal class PanelDataAdapter(
         holder.favoriteButton.setOnClickListener { v ->
             onClickListener.favoriteClickListener(v, panel)
         }
+        holder.panelClickView.setOnClickListener { v ->
+            onClickListener.panelClickListener(v, panel)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -41,12 +44,14 @@ internal class PanelDataAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView = view.findViewById(R.id.imageView2) as ImageView
         val textView: TextView = view.findViewById(R.id.textView3)
-        val favoriteButton: ImageButton = view.findViewById(R.id.button2)
-        val shareButton: ImageButton = view.findViewById(R.id.button3)
+        val favoriteButton: ImageButton = view.findViewById(R.id.isFavoriteButton1)
+        val shareButton: ImageButton = view.findViewById(R.id.shareButton1)
+        val panelClickView: View = view.findViewById(R.id.panelClickView)
     }
 
     class PanelDataAdapterListener(
         val favoriteClickListener: (v: View, panel: Panel) -> Unit,
-        val shareClickListener: (v: View, panel: Panel) -> Unit
+        val shareClickListener: (v: View, panel: Panel) -> Unit,
+        val panelClickListener: (v: View, panel: Panel) -> Unit
     )
 }

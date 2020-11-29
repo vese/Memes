@@ -12,8 +12,7 @@
     <string name="panels">panels</string>
     <string name="add">add</string>
     <string name="profile">profile</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dataError1">Не удалось загрузить ленту</string>
     <string name="dataError2">Обновите экран или попробуйте позже.</string>
+    <string name="days_ago">%1$d дней назад</string>
 </resources>
