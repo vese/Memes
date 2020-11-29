@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.memes.db.DBHelper
+import com.example.memes.db.Meme
 import com.example.memes.network.NetworkService
 import com.example.memes.network.models.MemeData
 import retrofit2.Call
@@ -38,12 +40,31 @@ class PanelsFragment : Fragment() {
             refreshLayout.isRefreshing = false
         }
 
-        refresh();
+        val dbHelper = DBHelper(context!!)
+        val result = dbHelper.getMemeList()
+        if (result.count() > 0) {
+            loadFromDb(result)
+        } else {
+            refresh()
+        }
+    }
+
+    private fun loadFromDb(result: List<Meme>) {
+        val darkView = requireView().findViewById<View>(R.id.darkView)
+        val spinner = requireView().findViewById<ProgressBar>(R.id.progressBar)
+        darkView.visibility = View.VISIBLE
+        spinner.visibility = View.VISIBLE
+        val panels = result.map { Panel(it.photoUrl, it.title) }
+        val dataAdapter = PanelDataAdapter(view!!.context, panels)
+        val recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.adapter = dataAdapter
+        darkView.visibility = View.GONE
+        spinner.visibility = View.GONE
     }
 
     private fun refresh() {
-        val darkView = view!!.findViewById<View>(R.id.darkView)
-        val spinner = view!!.findViewById<ProgressBar>(R.id.progressBar)
+        val darkView = requireView().findViewById<View>(R.id.darkView)
+        val spinner = requireView().findViewById<ProgressBar>(R.id.progressBar)
 
         darkView.visibility = View.VISIBLE
         spinner.visibility = View.VISIBLE
@@ -66,10 +87,13 @@ class PanelsFragment : Fragment() {
                             panels.add(
                                 Panel(
                                     data.photoUrl!!,
-                                    data.description!!
+                                    data.title!!
                                 )
                             )
                         }
+
+                        val dbHelper = DBHelper(context!!)
+                        dbHelper.insertMemes(result.map { Meme(it) })
                     } else {
                         errorText1.visibility = View.VISIBLE
                         errorText2.visibility = View.VISIBLE
