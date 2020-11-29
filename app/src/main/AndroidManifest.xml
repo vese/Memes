@@ -12,9 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Memes">
-        <activity android:name=".TabsActivity" />
-        <activity android:name=".AuthActivity" />
-        <activity android:name=".SplashActivity">
+        <activity android:name=".activities.tabs.TabsActivity" />
+        <activity android:name=".activities.auth.AuthActivity" />
+        <activity android:name=".activities.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

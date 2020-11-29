@@ -1,4 +1,4 @@
-package com.example.memes
+package com.example.memes.activities.tabs.fragments.panel
 
 import android.os.Bundle
 import android.os.Handler
@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.memes.R
 import com.example.memes.db.DBHelper
 import com.example.memes.db.Meme
 import com.example.memes.network.NetworkService
@@ -20,11 +21,14 @@ import retrofit2.Response
 
 class PanelsFragment : Fragment() {
 
+    lateinit var dbHelper: DBHelper
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        dbHelper  = DBHelper(context!!)
         return inflater.inflate(R.layout.fragment_panels, container, false)
     }
 
@@ -40,7 +44,6 @@ class PanelsFragment : Fragment() {
             refreshLayout.isRefreshing = false
         }
 
-        val dbHelper = DBHelper(context!!)
         val result = dbHelper.getMemeList()
         if (result.count() > 0) {
             loadFromDb(result)
@@ -49,13 +52,27 @@ class PanelsFragment : Fragment() {
         }
     }
 
+    fun favoriteClickListener(v: View, panel: Panel) {
+        panel.isFavorite = !panel.isFavorite
+        v.isSelected = panel.isFavorite
+        dbHelper.updateFavorite(panel.id, panel.isFavorite)
+    }
+
+    fun shareClickListener(v: View, panel: Panel) {
+        TODO("share")
+    }
+
     private fun loadFromDb(result: List<Meme>) {
         val darkView = requireView().findViewById<View>(R.id.darkView)
         val spinner = requireView().findViewById<ProgressBar>(R.id.progressBar)
         darkView.visibility = View.VISIBLE
         spinner.visibility = View.VISIBLE
-        val panels = result.map { Panel(it.photoUrl, it.title) }
-        val dataAdapter = PanelDataAdapter(view!!.context, panels)
+        val panels = result.map { Panel(it) }
+        val dataAdapter = PanelDataAdapter(
+            view!!.context,
+            panels,
+            PanelDataAdapter.PanelDataAdapterListener(::favoriteClickListener, ::shareClickListener)
+        )
         val recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = dataAdapter
         darkView.visibility = View.GONE
@@ -84,21 +101,22 @@ class PanelsFragment : Fragment() {
                         errorText2.visibility = View.GONE
                         val result = response.body()
                         result!!.forEach { data ->
-                            panels.add(
-                                Panel(
-                                    data.photoUrl!!,
-                                    data.title!!
-                                )
-                            )
+                            panels.add(Panel(data))
                         }
 
-                        val dbHelper = DBHelper(context!!)
                         dbHelper.insertMemes(result.map { Meme(it) })
                     } else {
                         errorText1.visibility = View.VISIBLE
                         errorText2.visibility = View.VISIBLE
                     }
-                    val dataAdapter = PanelDataAdapter(view!!.context, panels)
+                    val dataAdapter = PanelDataAdapter(
+                        view!!.context,
+                        panels,
+                        PanelDataAdapter.PanelDataAdapterListener(
+                            ::favoriteClickListener,
+                            ::shareClickListener
+                        )
+                    )
                     val recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView)
                     recyclerView.adapter = dataAdapter
                     darkView.visibility = View.GONE

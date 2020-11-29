@@ -1,4 +1,4 @@
-package com.example.memes
+package com.example.memes.activities.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,6 +14,8 @@ import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.memes.R
+import com.example.memes.activities.tabs.TabsActivity
 import com.example.memes.network.NetworkService
 import com.example.memes.network.models.AuthResult
 import com.example.memes.network.models.Credentials
