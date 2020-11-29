@@ -42,6 +42,11 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         return result
     }
 
+    fun updateFavorite(id: String, isFavorite: Boolean) {
+        val db = this.readableDatabase
+        db.execSQL(Meme.getUpdateFavoriteQuery(id, isFavorite))
+    }
+
     companion object {
         private const val DATABASE_VERSION = 1
         private const val DATABASE_NAME = "healthDiary.db"

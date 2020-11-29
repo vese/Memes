@@ -1,7 +1,11 @@
-package com.example.memes
+package com.example.memes.activities.tabs
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.memes.activities.tabs.fragments.AddFragment
+import com.example.memes.activities.tabs.fragments.panel.PanelsFragment
+import com.example.memes.activities.tabs.fragments.ProfileFragment
+import com.example.memes.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class TabsActivity : AppCompatActivity() {

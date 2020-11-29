@@ -7,7 +7,7 @@ class Meme {
     var id: String
     var title: String
     var description: String
-    var isFavorite: Boolean
+    var isFavorite: Number
     var createdDate: Number
     var photoUrl: String
 
@@ -22,7 +22,7 @@ class Meme {
         this.id = id
         this.title = title
         this.description = description
-        this.isFavorite = isFavorite
+        this.isFavorite = if (isFavorite) 1 else 0
         this.createdDate = createdDate
         this.photoUrl = photoUrl
     }
@@ -31,7 +31,7 @@ class Meme {
         this.id = data.id!!
         this.title = data.title!!
         this.description = data.description!!
-        this.isFavorite = data.isFavorite!!
+        this.isFavorite = if (data.isFavorite!!) 1 else 0
         this.createdDate = data.createdDate!!
         this.photoUrl = data.photoUrl!!
     }
@@ -41,12 +41,12 @@ class Meme {
                 "'${id}', " +
                 "'${title}', " +
                 "'${description}', " +
-                "'${isFavorite}', " +
-                "'${createdDate}', " +
+                "${isFavorite}, " +
+                "${createdDate}, " +
                 "'${photoUrl}')"
 
     companion object {
-        const val MODEL_NAME = "meme"
+        private const val MODEL_NAME = "meme"
         private const val ID_COLUMN_NAME = "id"
         private const val TITLE_COLUMN_NAME = "title"
         private const val DESCRIPTION_COLUMN_NAME = "description"
@@ -106,5 +106,8 @@ class Meme {
                 cursor.getString(cursor.getColumnIndex(PHOTO_URL_COLUMN_NAME))
             )
         }
+
+        fun getUpdateFavoriteQuery(id: String, isFavorite: Boolean): String =
+            "UPDATE $MODEL_NAME SET $IS_FAVORITE_COLUMN_NAME = ${if (isFavorite) 1 else 0} WHERE $ID_COLUMN_NAME = '${id}'"
     }
 }
