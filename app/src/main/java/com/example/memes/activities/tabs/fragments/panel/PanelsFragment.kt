@@ -1,5 +1,6 @@
 package com.example.memes.activities.tabs.fragments.panel
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -11,10 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.memes.R
+import com.example.memes.activities.detailed.DetailedActivity
 import com.example.memes.db.DBHelper
 import com.example.memes.db.Meme
 import com.example.memes.network.NetworkService
 import com.example.memes.network.models.MemeData
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,7 +31,7 @@ class PanelsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dbHelper  = DBHelper(context!!)
+        dbHelper = DBHelper(context!!)
         return inflater.inflate(R.layout.fragment_panels, container, false)
     }
 
@@ -62,6 +65,12 @@ class PanelsFragment : Fragment() {
         TODO("share")
     }
 
+    fun panelClickListener(v: View, panel: Panel) {
+        val intent = Intent(context, DetailedActivity::class.java)
+        intent.putExtra("panel", Gson().toJson(panel))
+        startActivity(intent)
+    }
+
     private fun loadFromDb(result: List<Meme>) {
         val darkView = requireView().findViewById<View>(R.id.darkView)
         val spinner = requireView().findViewById<ProgressBar>(R.id.progressBar)
@@ -71,7 +80,11 @@ class PanelsFragment : Fragment() {
         val dataAdapter = PanelDataAdapter(
             view!!.context,
             panels,
-            PanelDataAdapter.PanelDataAdapterListener(::favoriteClickListener, ::shareClickListener)
+            PanelDataAdapter.PanelDataAdapterListener(
+                ::favoriteClickListener,
+                ::shareClickListener,
+                ::panelClickListener
+            )
         )
         val recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = dataAdapter
@@ -114,7 +127,8 @@ class PanelsFragment : Fragment() {
                         panels,
                         PanelDataAdapter.PanelDataAdapterListener(
                             ::favoriteClickListener,
-                            ::shareClickListener
+                            ::shareClickListener,
+                            ::panelClickListener
                         )
                     )
                     val recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView)

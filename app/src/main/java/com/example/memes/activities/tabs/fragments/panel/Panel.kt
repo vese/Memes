@@ -7,14 +7,18 @@ class Panel(
     var id: String,
     var photoUrl: String,
     var title: String,
-    var isFavorite: Boolean
+    var isFavorite: Boolean,
+    var description: String,
+    var createdDate: Number
 ) {
 
     constructor(meme: MemeData) : this(
         meme.id!!,
         meme.photoUrl!!,
         meme.title!!,
-        meme.isFavorite!!
+        meme.isFavorite!!,
+        meme.description!!,
+        meme.createdDate!!
     ) {
     }
 
@@ -22,6 +26,8 @@ class Panel(
         meme.id,
         meme.photoUrl,
         meme.title,
-        meme.isFavorite != 0
+        meme.isFavorite != 0,
+        meme.description,
+        meme.createdDate
     )
 }
