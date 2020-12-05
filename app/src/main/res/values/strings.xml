@@ -15,4 +15,17 @@
     <string name="dataError1">Не удалось загрузить ленту</string>
     <string name="dataError2">Обновите экран или попробуйте позже.</string>
     <string name="days_ago">%1$d дней назад</string>
+    <string name="create">создать</string>
+    <string name="close">Close</string>
+    <string name="title_hint">Заголовок</string>
+    <string name="text_hint">Текст</string>
+    <string name="loaded_image">Loaded image</string>
+    <string name="attach_image">Attach image</string>
+    <string name="reset">Reset</string>
+    <string name="select_photo">Выбрать фото</string>
+    <string name="from_gallery">Из галереи</string>
+    <string name="take_photo">Сделать фото</string>
+    <string name="share">Share</string>
+    <string name="meme_image">Meme image</string>
+    <string name="set_favorite">Set favorite</string>
 </resources>

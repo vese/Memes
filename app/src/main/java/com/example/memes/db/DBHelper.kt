@@ -34,6 +34,11 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         db.execSQL(Meme.getInsertQuery(memes))
     }
 
+    fun insertMeme(meme: Meme) {
+        val db = this.readableDatabase
+        db.execSQL(meme.insertQuery)
+    }
+
     fun getMemeList(): ArrayList<Meme> {
         val db = this.readableDatabase
         val cursor = db.rawQuery(Meme.selectQuery, null)

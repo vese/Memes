@@ -27,4 +27,8 @@
     <style name="Theme.Memes.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemIconTint">@color/item_icon_tint_selector</item>
     </style>
+    <style name="Theme.Memes.Fab">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">21%</item>
+    </style>
 </resources>

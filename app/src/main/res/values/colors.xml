@@ -10,11 +10,15 @@
 
     <color name="error">#FF575D</color>
     <color name="active">#1EF0D7</color>
+    <color name="disabled_active">#4D1EF0D7</color>
     <color name="background">#23213F</color>
+    <color name="background_80">#CC23213F</color>
     <color name="background2">#312F51</color>
     <color name="background3">#12102B</color>
     <color name="secondary">#89FFFFFF</color>
     <color name="light">#9FACC7</color>
     <color name="darkened">#99000000</color>
     <color name="white_80">#CCFFFFFF</color>
+    <color name="white_50">#80FFFFFF</color>
+    <color name="transparent">#FFFFFFFF</color>
 </resources>
