@@ -47,6 +47,10 @@ class PanelsFragment : Fragment() {
             refreshLayout.isRefreshing = false
         }
 
+        initialLoad()
+    }
+
+    fun initialLoad() {
         val result = dbHelper.getMemeList()
         if (result.count() > 0) {
             loadFromDb(result)
@@ -61,11 +65,11 @@ class PanelsFragment : Fragment() {
         dbHelper.updateFavorite(panel.id, panel.isFavorite)
     }
 
-    fun shareClickListener(v: View, panel: Panel) {
+    fun shareClickListener(view: View, panel: Panel) {
         TODO("share")
     }
 
-    fun panelClickListener(v: View, panel: Panel) {
+    fun panelClickListener(view: View, panel: Panel) {
         val intent = Intent(context, DetailedActivity::class.java)
         intent.putExtra("panel", Gson().toJson(panel))
         startActivity(intent)
@@ -140,6 +144,6 @@ class PanelsFragment : Fragment() {
                 override fun onFailure(call: Call<List<MemeData>?>, t: Throwable) {
                 }
             })
-        }, this.resources.getInteger(R.integer.delay).toLong());
+        }, this.resources.getInteger(R.integer.delay).toLong())
     }
 }

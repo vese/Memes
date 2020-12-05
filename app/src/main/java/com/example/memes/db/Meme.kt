@@ -36,6 +36,22 @@ class Meme {
         this.photoUrl = data.photoUrl!!
     }
 
+    val insertQuery
+        get(): String = "INSERT OR IGNORE INTO $MODEL_NAME (" +
+                //"$ID_COLUMN_NAME, " +
+                "$TITLE_COLUMN_NAME, " +
+                "$DESCRIPTION_COLUMN_NAME, " +
+                "$IS_FAVORITE_COLUMN_NAME, " +
+                "$CREATED_DATE_COLUMN_NAME, " +
+                "$PHOTO_URL_COLUMN_NAME) " +
+                "VALUES (" +
+                //"'${id}', " +
+                "'${title}', " +
+                "'${description}', " +
+                "${isFavorite}, " +
+                "${createdDate}, " +
+                "'${photoUrl}');"
+
     private val insertValues
         get(): String = "(" +
                 "'${id}', " +
