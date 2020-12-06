@@ -82,7 +82,7 @@ class PanelsFragment : Fragment() {
         spinner.visibility = View.VISIBLE
         val panels = result.map { Panel(it) }
         val dataAdapter = PanelDataAdapter(
-            view!!.context,
+            requireView().context,
             panels,
             PanelDataAdapter.PanelDataAdapterListener(
                 ::favoriteClickListener,
@@ -90,7 +90,7 @@ class PanelsFragment : Fragment() {
                 ::panelClickListener
             )
         )
-        val recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView)
+        val recyclerView = requireView().findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = dataAdapter
         darkView.visibility = View.GONE
         spinner.visibility = View.GONE
@@ -110,8 +110,8 @@ class PanelsFragment : Fragment() {
                     call: Call<List<MemeData>>,
                     response: Response<List<MemeData>>
                 ) {
-                    val errorText1 = view!!.findViewById<TextView>(R.id.error_text1)
-                    val errorText2 = view!!.findViewById<TextView>(R.id.error_text2)
+                    val errorText1 = requireView().findViewById<TextView>(R.id.error_text1)
+                    val errorText2 = requireView().findViewById<TextView>(R.id.error_text2)
                     val panels = ArrayList<Panel>()
                     if (response.isSuccessful) {
                         errorText1.visibility = View.GONE
@@ -127,7 +127,7 @@ class PanelsFragment : Fragment() {
                         errorText2.visibility = View.VISIBLE
                     }
                     val dataAdapter = PanelDataAdapter(
-                        view!!.context,
+                        requireView().context,
                         panels,
                         PanelDataAdapter.PanelDataAdapterListener(
                             ::favoriteClickListener,
@@ -135,7 +135,7 @@ class PanelsFragment : Fragment() {
                             ::panelClickListener
                         )
                     )
-                    val recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView)
+                    val recyclerView = requireView().findViewById<RecyclerView>(R.id.recyclerView)
                     recyclerView.adapter = dataAdapter
                     darkView.visibility = View.GONE
                     spinner.visibility = View.GONE

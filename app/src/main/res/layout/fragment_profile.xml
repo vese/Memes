@@ -49,7 +49,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/active" />
+                    app:tint="@color/active"
+                    android:contentDescription="@string/more" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -78,7 +79,8 @@
                     android:src="@drawable/circle_imageview"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/profile_image_background" />
 
                 <ImageView
                     android:id="@+id/profileImage"
@@ -91,7 +93,8 @@
                     app:layout_constraintBottom_toBottomOf="@+id/profileImageBackground"
                     app:layout_constraintEnd_toEndOf="@+id/profileImageBackground"
                     app:layout_constraintStart_toStartOf="@+id/profileImageBackground"
-                    app:layout_constraintTop_toTopOf="@+id/profileImageBackground" />
+                    app:layout_constraintTop_toTopOf="@+id/profileImageBackground"
+                    android:contentDescription="@string/profile_image" />
 
                 <TextView
                     android:id="@+id/profileName"
@@ -141,6 +144,26 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
+
+        <View
+            android:id="@+id/darkView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/darkened"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@android:style/Widget.Material.Light.ProgressBar.Small"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:indeterminateTint="@color/active"
+            android:translationZ="100dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
