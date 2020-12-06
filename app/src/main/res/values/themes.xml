@@ -42,4 +42,9 @@
         <item name="android:windowBackground">@color/background2</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+
+    <style name="Theme.Memes.AlertDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/background2</item>
+        <item name="colorOnPrimary">@color/active</item>
+    </style>
 </resources>

@@ -30,4 +30,7 @@
     <string name="set_favorite">Set favorite</string>
     <string name="about_app">О приложении</string>
     <string name="logout">Выйти</string>
+    <string name="cancel">Отмена</string>
+    <string name="logout_message">Действительно хотите выйти?</string>
+    <string name="logout_error">Во время запроса произошла ошибка</string>
 </resources>
