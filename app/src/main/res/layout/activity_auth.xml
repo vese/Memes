@@ -94,7 +94,7 @@
         app:layout_constraintTop_toTopOf="@+id/button" />
 
     <View
-        android:id="@+id/view"
+        android:id="@+id/errorView"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@color/error"
@@ -106,7 +106,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/errorTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -117,9 +117,9 @@
         android:textColor="@color/white"
         android:translationZ="300dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/view" />
+        app:layout_constraintBottom_toBottomOf="@+id/errorView"
+        app:layout_constraintEnd_toEndOf="@+id/errorView"
+        app:layout_constraintStart_toStartOf="@+id/errorView"
+        app:layout_constraintTop_toTopOf="@+id/errorView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

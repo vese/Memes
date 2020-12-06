@@ -13,12 +13,12 @@ class Panel(
 ) {
 
     constructor(meme: MemeData) : this(
-        meme.id!!,
-        meme.photoUrl!!,
-        meme.title!!,
-        meme.isFavorite!!,
-        meme.description!!,
-        meme.createdDate!!
+        meme.id,
+        meme.photoUrl,
+        meme.title,
+        meme.isFavorite,
+        meme.description,
+        meme.createdDate
     ) {
     }
 

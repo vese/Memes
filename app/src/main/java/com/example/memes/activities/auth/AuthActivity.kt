@@ -29,17 +29,35 @@ import retrofit2.Callback
 import retrofit2.Response
 import studio.carbonylgroup.textfieldboxes.ExtendedEditText
 import studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-import kotlin.system.exitProcess
 
 class AuthActivity : AppCompatActivity() {
+
+    private lateinit var passwordInputText: ExtendedEditText
+    private lateinit var passwordInput: TextFieldBoxes
+    private lateinit var loginInputText: ExtendedEditText
+    private lateinit var loginInput: TextFieldBoxes
+    private lateinit var passwordVisibilityButton: ImageButton
+    private lateinit var spinner: ProgressBar
+    private lateinit var button: Button
+    private lateinit var errorView: View
+    private lateinit var errorTextView: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
 
-        val passwordInputText = findViewById<ExtendedEditText>(R.id.passwordInputText)
+        passwordInputText = findViewById(R.id.passwordInputText)
+        passwordInput = findViewById(R.id.passwordInput)
+        loginInputText = findViewById(R.id.loginInputText)
+        loginInput = findViewById(R.id.loginInput)
+        passwordVisibilityButton = findViewById(R.id.passwordVisibilityButton)
+        spinner = findViewById(R.id.progressBar)
+        button = findViewById(R.id.button)
+        errorView = findViewById(R.id.errorView)
+        errorTextView = findViewById(R.id.errorTextView)
+
         passwordInputText.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
         passwordInputText.transformationMethod = PasswordTransformationMethod.getInstance()
-        val passwordInput = findViewById<TextFieldBoxes>(R.id.passwordInput)
         passwordInputText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 if (s.length < 6) {
@@ -61,6 +79,7 @@ class AuthActivity : AppCompatActivity() {
             ) {
             }
         })
+
         passwordInputText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             run {
                 if (!hasFocus && passwordInputText.text.isEmpty()) {
@@ -69,8 +88,6 @@ class AuthActivity : AppCompatActivity() {
             }
         }
 
-        val loginInputText = findViewById<ExtendedEditText>(R.id.loginInputText)
-        val loginInput = findViewById<TextFieldBoxes>(R.id.loginInput)
         loginInputText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             run {
                 if (!hasFocus && loginInputText.text.isEmpty()) {
@@ -81,8 +98,6 @@ class AuthActivity : AppCompatActivity() {
     }
 
     fun changeVisibility(view: View) {
-        val passwordVisibilityButton = findViewById<ImageButton>(R.id.passwordVisibilityButton)
-        val passwordInputText = findViewById<ExtendedEditText>(R.id.passwordInputText)
         if (passwordInputText.inputType == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
             passwordVisibilityButton.setImageResource(R.drawable.eye)
             passwordInputText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
@@ -97,23 +112,23 @@ class AuthActivity : AppCompatActivity() {
     }
 
     fun login(view: View) {
-        val loginInputText = findViewById<ExtendedEditText>(R.id.loginInputText)
-        val passwordInputText = findViewById<ExtendedEditText>(R.id.passwordInputText)
         if (loginInputText.text.isEmpty() || passwordInputText.text.length < 6) {
             return
         }
 
-        val spinner = findViewById<ProgressBar>(R.id.progressBar)
-        val button = findViewById<Button>(R.id.button)
         spinner.visibility = View.VISIBLE
         button.text = ""
         val handler = Handler()
-        val credentials = Credentials()
-        credentials.login = "qwerty" //loginInputText.text.toString()
-        credentials.password = "qwerty" //passwordInputText.text.toString()
+        val credentials = Credentials(
+            "qwerty", //loginInputText.text.toString(),
+            "qwerty" //passwordInputText.text.toString()
+        )
         handler.postDelayed({
             NetworkService.authClient.login(credentials).enqueue(object : Callback<AuthResult> {
-                override fun onResponse(call: Call<AuthResult>, response: Response<AuthResult>) {
+                override fun onResponse(
+                    call: Call<AuthResult>,
+                    response: Response<AuthResult>
+                ) {
                     if (response.isSuccessful) {
                         val result = response.body()
                         if (result != null) {
@@ -126,10 +141,8 @@ class AuthActivity : AppCompatActivity() {
                             response.errorBody()?.charStream(),
                             object : TypeToken<ErrorResult>() {}.type
                         )
-                        val errorTextView = findViewById<View>(R.id.view)
-                        val textView = findViewById<TextView>(R.id.textView)
+                        errorView.visibility = View.VISIBLE
                         errorTextView.visibility = View.VISIBLE
-                        textView.visibility = View.VISIBLE
                     }
                     spinner.visibility = View.GONE
                     button.text = getString(R.string.log_in)
@@ -142,22 +155,18 @@ class AuthActivity : AppCompatActivity() {
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        val errorTextView = findViewById<View>(R.id.view)
-        if (errorTextView.y > ev.rawY && errorTextView.visibility != View.GONE) {
-            val textView = findViewById<TextView>(R.id.textView)
+        if (errorView.y > ev.rawY && errorView.visibility != View.GONE) {
+            errorView.visibility = View.GONE
             errorTextView.visibility = View.GONE
-            textView.visibility = View.GONE
         }
 
         return super.dispatchTouchEvent(ev)
     }
 
     fun hideError(view: View) {
-        val errorTextView = findViewById<View>(R.id.view)
-        if (errorTextView.visibility != View.GONE) {
-            val textView = findViewById<TextView>(R.id.textView)
+        if (errorView.visibility != View.GONE) {
+            errorView.visibility = View.GONE
             errorTextView.visibility = View.GONE
-            textView.visibility = View.GONE
         }
     }
 

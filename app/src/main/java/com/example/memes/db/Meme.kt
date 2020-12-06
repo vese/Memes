@@ -31,12 +31,12 @@ class Meme {
     }
 
     constructor(data: MemeData) {
-        this.id = data.id!!
-        this.title = data.title!!
-        this.description = data.description!!
-        this.isFavorite = if (data.isFavorite!!) 1 else 0
-        this.createdDate = data.createdDate!!
-        this.photoUrl = data.photoUrl!!
+        this.id = data.id
+        this.title = data.title
+        this.description = data.description
+        this.isFavorite = if (data.isFavorite) 1 else 0
+        this.createdDate = data.createdDate
+        this.photoUrl = data.photoUrl
     }
 
     val insertQuery
@@ -108,9 +108,9 @@ class Meme {
 
         val selectLocalQuery get() = "SELECT * FROM $MODEL_NAME WHERE $IS_LOCAL_COLUMN_NAME = 1 ORDER BY $ID_COLUMN_NAME DESC"
 
-        fun getMemeList(cursor: Cursor?): ArrayList<Meme> {
+        fun getMemeList(cursor: Cursor): ArrayList<Meme> {
             val result: ArrayList<Meme> = ArrayList()
-            if (cursor!!.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 result.add(getMeme(cursor))
                 while (cursor.moveToNext()) {
                     result.add(getMeme(cursor))
