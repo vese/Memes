@@ -14,6 +14,7 @@ import com.example.memes.R
 import com.example.memes.activities.add.fragments.ImageLoadDialogFragment
 import com.example.memes.db.DBHelper
 import com.example.memes.db.Meme
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 
@@ -74,6 +75,8 @@ class AddActivity : AppCompatActivity() {
         val resetImageButton = findViewById<ImageButton>(R.id.resetImageButton)
         resetImageButton.visibility = View.VISIBLE
         checkFilled()
+        val openLoadImageDialogButton = findViewById<FloatingActionButton>(R.id.openLoadImageDialogButton)
+        openLoadImageDialogButton.isEnabled = false
     }
 
     fun resetImage(view: View) {
@@ -81,6 +84,8 @@ class AddActivity : AppCompatActivity() {
         imageView.visibility = View.GONE
         view.visibility = View.GONE
         checkFilled()
+        val openLoadImageDialogButton = findViewById<FloatingActionButton>(R.id.openLoadImageDialogButton)
+        openLoadImageDialogButton.isEnabled = true
     }
 
     private fun checkFilled() {

@@ -11,7 +11,7 @@
     <string name="title">Популярные мемы</string>
     <string name="panels">panels</string>
     <string name="add">add</string>
-    <string name="profile">profile</string>
+    <string name="profile">Профиль</string>
     <string name="dataError1">Не удалось загрузить ленту</string>
     <string name="dataError2">Обновите экран или попробуйте позже.</string>
     <string name="days_ago">%1$d дней назад</string>
@@ -28,4 +28,6 @@
     <string name="share">Share</string>
     <string name="meme_image">Meme image</string>
     <string name="set_favorite">Set favorite</string>
+    <string name="about_app">О приложении</string>
+    <string name="logout">Выйти</string>
 </resources>
