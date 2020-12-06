@@ -113,7 +113,8 @@ class AddActivity : AppCompatActivity() {
                     descriptionText.text.toString(),
                     false,
                     Calendar.getInstance().timeInMillis / 1000,
-                    it
+                    it,
+                    true
                 )
             )
         }

@@ -10,6 +10,7 @@ class Meme {
     var isFavorite: Number
     var createdDate: Number
     var photoUrl: String
+    var isLocal: Number = 0
 
     constructor(
         id: String,
@@ -17,7 +18,8 @@ class Meme {
         description: String,
         isFavorite: Boolean,
         createdDate: Number,
-        photoUrl: String
+        photoUrl: String,
+        isLocal: Boolean = false
     ) {
         this.id = id
         this.title = title
@@ -25,6 +27,7 @@ class Meme {
         this.isFavorite = if (isFavorite) 1 else 0
         this.createdDate = createdDate
         this.photoUrl = photoUrl
+        this.isLocal = if (isLocal) 1 else 0
     }
 
     constructor(data: MemeData) {
@@ -43,14 +46,16 @@ class Meme {
                 "$DESCRIPTION_COLUMN_NAME, " +
                 "$IS_FAVORITE_COLUMN_NAME, " +
                 "$CREATED_DATE_COLUMN_NAME, " +
-                "$PHOTO_URL_COLUMN_NAME) " +
+                "$PHOTO_URL_COLUMN_NAME, " +
+                "$IS_LOCAL_COLUMN_NAME) " +
                 "VALUES (" +
                 //"'${id}', " +
                 "'${title}', " +
                 "'${description}', " +
                 "${isFavorite}, " +
                 "${createdDate}, " +
-                "'${photoUrl}');"
+                "'${photoUrl}', " +
+                "${isLocal});"
 
     private val insertValues
         get(): String = "(" +
@@ -69,6 +74,7 @@ class Meme {
         private const val IS_FAVORITE_COLUMN_NAME = "isFavorite"
         private const val CREATED_DATE_COLUMN_NAME = "createdDate"
         private const val PHOTO_URL_COLUMN_NAME = "photoUrl"
+        private const val IS_LOCAL_COLUMN_NAME = "isLocal"
 
         val createQuery
             get() = "CREATE TABLE $MODEL_NAME (" +
@@ -77,11 +83,11 @@ class Meme {
                     "$DESCRIPTION_COLUMN_NAME TEXT," +
                     "$IS_FAVORITE_COLUMN_NAME INTEGER," +
                     "$CREATED_DATE_COLUMN_NAME INTEGER," +
-                    "$PHOTO_URL_COLUMN_NAME TEXT" +
+                    "$PHOTO_URL_COLUMN_NAME TEXT," +
+                    "$IS_LOCAL_COLUMN_NAME INTEGER DEFAULT 0" +
                     ")"
 
         val dropQuery get() = "DROP TABLE IF EXISTS $MODEL_NAME"
-
 
         fun getInsertQuery(memes: List<Meme>): String = memes.joinToString(
             ", ",
@@ -99,6 +105,8 @@ class Meme {
         val deleteQuery get() = "DELETE FROM $MODEL_NAME"
 
         val selectQuery get() = "SELECT * FROM $MODEL_NAME ORDER BY $ID_COLUMN_NAME DESC"
+
+        val selectLocalQuery get() = "SELECT * FROM $MODEL_NAME WHERE $IS_LOCAL_COLUMN_NAME = 1 ORDER BY $ID_COLUMN_NAME DESC"
 
         fun getMemeList(cursor: Cursor?): ArrayList<Meme> {
             val result: ArrayList<Meme> = ArrayList()
@@ -119,7 +127,8 @@ class Meme {
                 cursor.getString(cursor.getColumnIndex(DESCRIPTION_COLUMN_NAME)),
                 cursor.getInt(cursor.getColumnIndex(IS_FAVORITE_COLUMN_NAME)) > 0,
                 cursor.getInt(cursor.getColumnIndex(CREATED_DATE_COLUMN_NAME)),
-                cursor.getString(cursor.getColumnIndex(PHOTO_URL_COLUMN_NAME))
+                cursor.getString(cursor.getColumnIndex(PHOTO_URL_COLUMN_NAME)),
+                cursor.getInt(cursor.getColumnIndex(IS_LOCAL_COLUMN_NAME)) > 0,
             )
         }
 

@@ -66,8 +66,8 @@ class ProfileFragment : Fragment() {
 
         val aboutAppOptionButton = popupView.findViewById<Button>(R.id.aboutAppOptionButton)
         aboutAppOptionButton.setOnClickListener {
-            // TODO: 05.12.2020 onclick
             window.dismiss()
+            TODO("about")
         }
 
         val builder = AlertDialog.Builder(view.context, R.style.Theme_Memes_AlertDialog)
@@ -122,24 +122,22 @@ class ProfileFragment : Fragment() {
     }
 
     fun initialLoad() {
-        val result = dbHelper.getMemeList()
+        val result = dbHelper.getLocalMemeList()
         if (result.count() > 0) {
             loadFromDb(result)
         }
     }
 
     fun dispatchTouchEvent(ev: MotionEvent) {
-        view?.let {
-            if (window.isShowing) {
-                val moreButton = it.findViewById<ImageView>(R.id.moreButton)
-                val outRect = Rect()
-                val location = IntArray(2)
-                moreButton.getDrawingRect(outRect);
-                moreButton.getLocationOnScreen(location);
-                outRect.offset(location[0], location[1]);
-                if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-                    window.dismiss()
-                }
+        if (window.isShowing) {
+            val moreButton = requireView().findViewById<ImageView>(R.id.moreButton)
+            val outRect = Rect()
+            val location = IntArray(2)
+            moreButton.getDrawingRect(outRect)
+            moreButton.getLocationOnScreen(location)
+            outRect.offset(location[0], location[1])
+            if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                window.dismiss()
             }
         }
     }
@@ -170,9 +168,13 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loadFromDb(result: List<Meme>) {
+        val darkView = requireView().findViewById<View>(R.id.darkView)
+        val spinner = requireView().findViewById<ProgressBar>(R.id.progressBar)
+        darkView.visibility = View.VISIBLE
+        spinner.visibility = View.VISIBLE
         val panels = result.map { Panel(it) }
         val dataAdapter = PanelDataAdapter(
-            view!!.context,
+            requireView().context,
             panels,
             PanelDataAdapter.PanelDataAdapterListener(
                 ::favoriteClickListener,
@@ -180,7 +182,9 @@ class ProfileFragment : Fragment() {
                 ::panelClickListener
             )
         )
-        val recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView)
+        val recyclerView = requireView().findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = dataAdapter
+        darkView.visibility = View.GONE
+        spinner.visibility = View.GONE
     }
 }

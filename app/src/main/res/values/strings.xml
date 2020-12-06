@@ -33,4 +33,7 @@
     <string name="cancel">Отмена</string>
     <string name="logout_message">Действительно хотите выйти?</string>
     <string name="logout_error">Во время запроса произошла ошибка</string>
+    <string name="profile_image">Profile image</string>
+    <string name="profile_image_background">Profile image background</string>
+    <string name="more">More</string>
 </resources>

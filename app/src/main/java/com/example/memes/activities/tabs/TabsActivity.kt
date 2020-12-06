@@ -42,14 +42,18 @@ class TabsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val fragments = supportFragmentManager.fragments
-        val panelsFragment: PanelsFragment? = fragments.find { it is PanelsFragment } as PanelsFragment?
+        val panelsFragment: PanelsFragment? =
+            fragments.find { it is PanelsFragment } as PanelsFragment?
         panelsFragment?.initialLoad()
+        val profileFragment: ProfileFragment? =
+            fragments.find { it is ProfileFragment } as ProfileFragment?
+        profileFragment?.initialLoad()
     }
-
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         val fragments = supportFragmentManager.fragments
-        val profileFragment: ProfileFragment? = fragments.find { it is ProfileFragment } as ProfileFragment?
+        val profileFragment: ProfileFragment? =
+            fragments.find { it is ProfileFragment } as ProfileFragment?
         profileFragment?.dispatchTouchEvent(ev)
         return super.dispatchTouchEvent(ev)
     }
