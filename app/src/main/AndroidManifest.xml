@@ -16,10 +16,11 @@
         <activity android:name=".activities.detailed.DetailedActivity" />
         <activity android:name=".activities.tabs.TabsActivity" />
         <activity android:name=".activities.auth.AuthActivity" />
-        <activity android:name=".activities.splash.SplashActivity">
+        <activity
+            android:name=".activities.splash.SplashActivity"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

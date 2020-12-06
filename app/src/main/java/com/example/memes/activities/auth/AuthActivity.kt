@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.PasswordTransformationMethod
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
@@ -28,7 +29,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import studio.carbonylgroup.textfieldboxes.ExtendedEditText
 import studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-
+import kotlin.system.exitProcess
 
 class AuthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -158,5 +159,12 @@ class AuthActivity : AppCompatActivity() {
             errorTextView.visibility = View.GONE
             textView.visibility = View.GONE
         }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finishAffinity()
+        }
+        return super.onKeyDown(keyCode, event)
     }
 }

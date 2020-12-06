@@ -44,4 +44,17 @@ class UserRepository(private val context: Context) {
 
         return user
     }
+
+    fun removeUser() {
+        val userSharedPreferences: SharedPreferences =
+            context.getSharedPreferences(USER_INFO_KEY, Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = userSharedPreferences.edit()
+        editor.remove(USER_ACCESS_TOKEN)
+        editor.remove(USER_ID)
+        editor.remove(USER_USERNAME)
+        editor.remove(USER_FIRST_NAME)
+        editor.remove(USER_LAST_NAME)
+        editor.remove(USER_DESCRIPTION)
+        editor.apply()
+    }
 }

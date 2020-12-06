@@ -98,12 +98,12 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@color/error"
+        android:onClick="hideError"
         android:translationZ="200dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:onClick="hideError"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"
