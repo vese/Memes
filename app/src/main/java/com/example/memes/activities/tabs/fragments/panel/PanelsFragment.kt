@@ -105,10 +105,10 @@ class PanelsFragment : Fragment() {
 
         val handler = Handler()
         handler.postDelayed({
-            NetworkService.dataClient.getMemes()?.enqueue(object : Callback<List<MemeData>?> {
+            NetworkService.dataClient.getMemes().enqueue(object : Callback<List<MemeData>> {
                 override fun onResponse(
-                    call: Call<List<MemeData>?>,
-                    response: Response<List<MemeData>?>
+                    call: Call<List<MemeData>>,
+                    response: Response<List<MemeData>>
                 ) {
                     val errorText1 = view!!.findViewById<TextView>(R.id.error_text1)
                     val errorText2 = view!!.findViewById<TextView>(R.id.error_text2)

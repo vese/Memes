@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface IDataClient {
     @GET("memes")
-    fun getMemes(): Call<List<MemeData>?>?
+    fun getMemes(): Call<List<MemeData>>
 }
