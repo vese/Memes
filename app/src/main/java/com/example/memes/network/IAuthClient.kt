@@ -8,5 +8,8 @@ import retrofit2.http.POST
 
 interface IAuthClient {
     @POST("auth/login")
-    fun login(@Body data: Credentials): Call<AuthResult?>?
+    fun login(@Body data: Credentials): Call<AuthResult>
+
+    @POST("auth/logout")
+    fun logout(): Call<Void>
 }

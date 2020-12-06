@@ -11,12 +11,20 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.memes.R
 import com.example.memes.activities.detailed.DetailedActivity
+import com.example.memes.activities.tabs.TabsActivity
 import com.example.memes.activities.tabs.fragments.panel.Panel
 import com.example.memes.activities.tabs.fragments.panel.PanelDataAdapter
 import com.example.memes.db.DBHelper
 import com.example.memes.db.Meme
+import com.example.memes.network.NetworkService
+import com.example.memes.network.models.AuthResult
+import com.example.memes.network.models.ErrorResult
 import com.example.memes.repository.UserRepository
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ProfileFragment : Fragment() {
 
@@ -61,7 +69,22 @@ class ProfileFragment : Fragment() {
 
         val logoutOptionButton = popupView.findViewById<Button>(R.id.logoutOptionButton)
         logoutOptionButton.setOnClickListener {
-            // TODO: 05.12.2020 onclick
+            NetworkService.authClient.logout().enqueue(object :
+                Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        // TODO: 06.12.2020 logout
+                    } else {
+                        val errorResponse: ErrorResult? = Gson().fromJson(
+                            response.errorBody()?.charStream(),
+                            object : TypeToken<ErrorResult>() {}.type
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                }
+            })
         }
 
         window.contentView = popupView

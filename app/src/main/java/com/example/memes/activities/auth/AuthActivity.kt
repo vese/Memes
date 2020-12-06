@@ -111,8 +111,8 @@ class AuthActivity : AppCompatActivity() {
         credentials.login = "qwerty" //loginInputText.text.toString()
         credentials.password = "qwerty" //passwordInputText.text.toString()
         handler.postDelayed({
-            NetworkService.authClient.login(credentials)?.enqueue(object : Callback<AuthResult?> {
-                override fun onResponse(call: Call<AuthResult?>, response: Response<AuthResult?>) {
+            NetworkService.authClient.login(credentials).enqueue(object : Callback<AuthResult> {
+                override fun onResponse(call: Call<AuthResult>, response: Response<AuthResult>) {
                     if (response.isSuccessful) {
                         val result = response.body()
                         if (result != null) {
@@ -134,7 +134,7 @@ class AuthActivity : AppCompatActivity() {
                     button.text = getString(R.string.log_in)
                 }
 
-                override fun onFailure(call: Call<AuthResult?>, t: Throwable) {
+                override fun onFailure(call: Call<AuthResult>, t: Throwable) {
                 }
             })
         }, this.resources.getInteger(R.integer.delay).toLong())
