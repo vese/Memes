@@ -15,9 +15,8 @@ import java.util.*
 
 class DetailedActivity : AppCompatActivity() {
 
-    lateinit var dbHelper: DBHelper
-
-    lateinit var panel: Panel
+    private lateinit var dbHelper: DBHelper
+    private lateinit var panel: Panel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -32,6 +32,9 @@ internal class PanelDataAdapter(
         holder.favoriteButton.setOnClickListener { v ->
             onClickListener.favoriteClickListener(v, panel)
         }
+        holder.shareButton.setOnClickListener { v ->
+            onClickListener.shareClickListener(v, panel)
+        }
         holder.panelClickView.setOnClickListener { v ->
             onClickListener.panelClickListener(v, panel)
         }

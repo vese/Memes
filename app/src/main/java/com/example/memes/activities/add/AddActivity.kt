@@ -20,14 +20,29 @@ import java.util.*
 
 class AddActivity : AppCompatActivity() {
 
-    private var photoUrl: String? = null
+    private lateinit var titleText: EditText
+    private lateinit var titleTextLayout: TextInputLayout
+    private lateinit var descriptionText: EditText
+    private lateinit var descriptionTextLayout: TextInputLayout
+    private lateinit var imageView: ImageView
+    private lateinit var resetImageButton: ImageButton
+    private lateinit var openLoadImageDialogButton: FloatingActionButton
+    private lateinit var createButton: Button
+    private lateinit var photoUrl: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
 
-        val titleText = findViewById<EditText>(R.id.titleText)
-        val titleTextLayout = findViewById<TextInputLayout>(R.id.titleTextLayout)
+        titleText = findViewById(R.id.titleText)
+        titleTextLayout = findViewById(R.id.titleTextLayout)
+        descriptionText = findViewById(R.id.descriptionText)
+        descriptionTextLayout = findViewById(R.id.descriptionTextLayout)
+        imageView = findViewById(R.id.loadedImageView)
+        resetImageButton = findViewById(R.id.resetImageButton)
+        openLoadImageDialogButton = findViewById(R.id.openLoadImageDialogButton)
+        createButton = findViewById(R.id.createButton)
+
         titleText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 checkFilled()
@@ -40,8 +55,6 @@ class AddActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             }
         })
-        val descriptionText = findViewById<EditText>(R.id.descriptionText)
-        val descriptionTextLayout = findViewById<TextInputLayout>(R.id.descriptionTextLayout)
         descriptionText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 checkFilled()
@@ -69,55 +82,42 @@ class AddActivity : AppCompatActivity() {
 
     private fun loadImage(photoUrl: String) {
         this.photoUrl = photoUrl
-        val imageView = findViewById<ImageView>(R.id.loadedImageView)
         imageView.visibility = View.VISIBLE
         Glide.with(this).load(photoUrl).into(imageView)
-        val resetImageButton = findViewById<ImageButton>(R.id.resetImageButton)
         resetImageButton.visibility = View.VISIBLE
         checkFilled()
-        val openLoadImageDialogButton = findViewById<FloatingActionButton>(R.id.openLoadImageDialogButton)
         openLoadImageDialogButton.isEnabled = false
     }
 
     fun resetImage(view: View) {
-        val imageView = findViewById<ImageView>(R.id.loadedImageView)
         imageView.visibility = View.GONE
         view.visibility = View.GONE
         checkFilled()
-        val openLoadImageDialogButton = findViewById<FloatingActionButton>(R.id.openLoadImageDialogButton)
         openLoadImageDialogButton.isEnabled = true
     }
 
     private fun checkFilled() {
-        val imageView = findViewById<ImageView>(R.id.loadedImageView)
-        val titleText = findViewById<EditText>(R.id.titleText)
         val titleTextLength = titleText.length()
-        val descriptionText = findViewById<EditText>(R.id.descriptionText)
         val descriptionTextLength = descriptionText.length()
 
-        val createButton = findViewById<Button>(R.id.createButton)
         createButton.isEnabled = imageView.visibility != View.GONE &&
                 titleTextLength > 0 && titleTextLength <= 140 &&
                 descriptionTextLength > 0 && descriptionTextLength <= 1000
     }
 
     fun addToDb(view: View) {
-        val titleText = findViewById<EditText>(R.id.titleText)
-        val descriptionText = findViewById<EditText>(R.id.descriptionText)
         val dbHelper = DBHelper(this)
-        photoUrl?.let {
-            dbHelper.insertMeme(
-                Meme(
-                    "",
-                    titleText.text.toString(),
-                    descriptionText.text.toString(),
-                    false,
-                    Calendar.getInstance().timeInMillis / 1000,
-                    it,
-                    true
-                )
+        dbHelper.insertMeme(
+            Meme(
+                "",
+                titleText.text.toString(),
+                descriptionText.text.toString(),
+                false,
+                Calendar.getInstance().timeInMillis / 1000,
+                photoUrl,
+                true
             )
-        }
+        )
         finish()
     }
 }

@@ -1,6 +1,5 @@
 package com.example.memes.activities.tabs.fragments.profile
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
@@ -14,9 +13,9 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.memes.R
 import com.example.memes.activities.auth.AuthActivity
 import com.example.memes.activities.detailed.DetailedActivity
-import com.example.memes.activities.tabs.TabsActivity
 import com.example.memes.activities.tabs.fragments.panel.Panel
 import com.example.memes.activities.tabs.fragments.panel.PanelDataAdapter
+import com.example.memes.activities.tabs.fragments.profile.Consts.PROFILE_PHOTO_URL
 import com.example.memes.db.DBHelper
 import com.example.memes.db.Meme
 import com.example.memes.network.NetworkService
@@ -30,38 +29,59 @@ import retrofit2.Response
 
 class ProfileFragment : Fragment() {
 
-    lateinit var window: PopupWindow
-
-    lateinit var dbHelper: DBHelper
+    private lateinit var profileImage: ImageView
+    private lateinit var profileName: TextView
+    private lateinit var profileDescription: TextView
+    private lateinit var moreButton: ImageView
+    private lateinit var darkView: View
+    private lateinit var spinner: ProgressBar
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var window: PopupWindow
+    private lateinit var dbHelper: DBHelper
+    private lateinit var repository: UserRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dbHelper = DBHelper(context!!)
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val profileImage = view.findViewById<ImageView>(R.id.profileImage)
-        Glide.with(this).load(Consts.PROFILE_PHOTO_URL).transform(CircleCrop()).into(profileImage)
+        dbHelper = DBHelper(view.context)
+        repository = UserRepository(view.context)
+        profileImage = view.findViewById(R.id.profileImage)
+        profileName = view.findViewById(R.id.profileName)
+        profileDescription = view.findViewById(R.id.profileDescription)
+        moreButton = view.findViewById(R.id.moreButton)
+        moreButton = view.findViewById(R.id.moreButton)
+        darkView = view.findViewById(R.id.darkView)
+        spinner = view.findViewById(R.id.progressBar)
+        recyclerView = view.findViewById(R.id.recyclerView)
 
-        val repository = UserRepository(view.context)
+        Glide.with(this).load(PROFILE_PHOTO_URL).transform(CircleCrop()).into(profileImage)
+
         val user = repository.getUser()
-
-        val profileName = view.findViewById<TextView>(R.id.profileName)
         profileName.text = user?.username
-
-        val profileDescription = view.findViewById<TextView>(R.id.profileDescription)
         profileDescription.text = user?.userDescription
 
         initialLoad()
 
-        val moreButton = view.findViewById<ImageView>(R.id.moreButton)
-        window = PopupWindow(view.context, null, R.style.Theme_Memes_PopupWindow)
+        initMoreMenu()
+    }
+
+    fun initialLoad() {
+        val result = dbHelper.getLocalMemeList()
+        if (result.count() > 0) {
+            loadFromDb(result)
+        }
+    }
+
+    private fun initMoreMenu() {
+        window = PopupWindow(requireView().context, null, R.style.Theme_Memes_PopupWindow)
         val popupView = layoutInflater.inflate(R.layout.layout_popup, null)
 
         val aboutAppOptionButton = popupView.findViewById<Button>(R.id.aboutAppOptionButton)
@@ -70,32 +90,14 @@ class ProfileFragment : Fragment() {
             TODO("about")
         }
 
-        val builder = AlertDialog.Builder(view.context, R.style.Theme_Memes_AlertDialog)
+        val builder = AlertDialog.Builder(requireView().context, R.style.Theme_Memes_AlertDialog)
         builder.setMessage(R.string.logout_message)
             .setNegativeButton(
                 R.string.cancel
             ) { _, _ -> }
             .setPositiveButton(
                 R.string.logout
-            ) { _, _ ->
-                NetworkService.authClient.logout().enqueue(object :
-                    Callback<Void> {
-                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                        if (response.isSuccessful) {
-                            repository.removeUser()
-                            startActivity(Intent(view.context, AuthActivity::class.java))
-                        } else {
-                            val errorResponse: ErrorResult? = Gson().fromJson(
-                                response.errorBody()?.charStream(),
-                                object : TypeToken<ErrorResult>() {}.type
-                            )
-                        }
-                    }
-
-                    override fun onFailure(call: Call<Void>, t: Throwable) {
-                    }
-                })
-            }
+            ) { _, _ -> logout() }
         val logoutDialog = builder.create()
 
         val logoutOptionButton = popupView.findViewById<Button>(R.id.logoutOptionButton)
@@ -121,16 +123,28 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    fun initialLoad() {
-        val result = dbHelper.getLocalMemeList()
-        if (result.count() > 0) {
-            loadFromDb(result)
-        }
+    private fun logout() {
+        NetworkService.authClient.logout().enqueue(object :
+            Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    repository.removeUser()
+                    startActivity(Intent(requireView().context, AuthActivity::class.java))
+                } else {
+                    val errorResponse: ErrorResult? = Gson().fromJson(
+                        response.errorBody()?.charStream(),
+                        object : TypeToken<ErrorResult>() {}.type
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+            }
+        })
     }
 
     fun dispatchTouchEvent(ev: MotionEvent) {
         if (window.isShowing) {
-            val moreButton = requireView().findViewById<ImageView>(R.id.moreButton)
             val outRect = Rect()
             val location = IntArray(2)
             moreButton.getDrawingRect(outRect)
@@ -151,25 +165,23 @@ class ProfileFragment : Fragment() {
         return View.MeasureSpec.makeMeasureSpec(View.MeasureSpec.getSize(measureSpec), mode)
     }
 
-    fun favoriteClickListener(v: View, panel: Panel) {
+    private fun favoriteClickListener(v: View, panel: Panel) {
         panel.isFavorite = !panel.isFavorite
         v.isSelected = panel.isFavorite
         dbHelper.updateFavorite(panel.id, panel.isFavorite)
     }
 
-    fun shareClickListener(view: View, panel: Panel) {
+    private fun shareClickListener(view: View, panel: Panel) {
         TODO("share")
     }
 
-    fun panelClickListener(view: View, panel: Panel) {
+    private fun panelClickListener(view: View, panel: Panel) {
         val intent = Intent(context, DetailedActivity::class.java)
         intent.putExtra("panel", Gson().toJson(panel))
         startActivity(intent)
     }
 
     private fun loadFromDb(result: List<Meme>) {
-        val darkView = requireView().findViewById<View>(R.id.darkView)
-        val spinner = requireView().findViewById<ProgressBar>(R.id.progressBar)
         darkView.visibility = View.VISIBLE
         spinner.visibility = View.VISIBLE
         val panels = result.map { Panel(it) }
@@ -182,7 +194,6 @@ class ProfileFragment : Fragment() {
                 ::panelClickListener
             )
         )
-        val recyclerView = requireView().findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = dataAdapter
         darkView.visibility = View.GONE
         spinner.visibility = View.GONE

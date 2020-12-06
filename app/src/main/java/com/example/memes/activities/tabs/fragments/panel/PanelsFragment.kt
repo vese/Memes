@@ -24,21 +24,33 @@ import retrofit2.Response
 
 class PanelsFragment : Fragment() {
 
-    lateinit var dbHelper: DBHelper
+    private lateinit var refreshLayout: SwipeRefreshLayout
+    private lateinit var darkView: View
+    private lateinit var spinner: ProgressBar
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var errorText1: TextView
+    private lateinit var errorText2: TextView
+    private lateinit var dbHelper: DBHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dbHelper = DBHelper(context!!)
         return inflater.inflate(R.layout.fragment_panels, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val refreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.refreshLayout)
+        dbHelper = DBHelper(view.context)
+        refreshLayout = view.findViewById(R.id.refreshLayout)
+        darkView = view.findViewById(R.id.darkView)
+        spinner = view.findViewById(R.id.progressBar)
+        recyclerView = view.findViewById(R.id.recyclerView)
+        errorText1 = view.findViewById(R.id.error_text1)
+        errorText2 = view.findViewById(R.id.error_text2)
+
         refreshLayout.setProgressBackgroundColorSchemeResource(R.color.active)
         refreshLayout.setColorSchemeResources(R.color.background)
 
@@ -76,8 +88,6 @@ class PanelsFragment : Fragment() {
     }
 
     private fun loadFromDb(result: List<Meme>) {
-        val darkView = requireView().findViewById<View>(R.id.darkView)
-        val spinner = requireView().findViewById<ProgressBar>(R.id.progressBar)
         darkView.visibility = View.VISIBLE
         spinner.visibility = View.VISIBLE
         val panels = result.map { Panel(it) }
@@ -90,16 +100,12 @@ class PanelsFragment : Fragment() {
                 ::panelClickListener
             )
         )
-        val recyclerView = requireView().findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = dataAdapter
         darkView.visibility = View.GONE
         spinner.visibility = View.GONE
     }
 
     private fun refresh() {
-        val darkView = requireView().findViewById<View>(R.id.darkView)
-        val spinner = requireView().findViewById<ProgressBar>(R.id.progressBar)
-
         darkView.visibility = View.VISIBLE
         spinner.visibility = View.VISIBLE
 
@@ -110,18 +116,18 @@ class PanelsFragment : Fragment() {
                     call: Call<List<MemeData>>,
                     response: Response<List<MemeData>>
                 ) {
-                    val errorText1 = requireView().findViewById<TextView>(R.id.error_text1)
-                    val errorText2 = requireView().findViewById<TextView>(R.id.error_text2)
                     val panels = ArrayList<Panel>()
                     if (response.isSuccessful) {
                         errorText1.visibility = View.GONE
                         errorText2.visibility = View.GONE
                         val result = response.body()
-                        result!!.forEach { data ->
-                            panels.add(Panel(data))
-                        }
+                        result?.let {
+                            result.forEach { data ->
+                                panels.add(Panel(data))
+                            }
 
-                        dbHelper.insertMemes(result.map { Meme(it) })
+                            dbHelper.insertMemes(result.map { Meme(it) })
+                        }
                     } else {
                         errorText1.visibility = View.VISIBLE
                         errorText2.visibility = View.VISIBLE
@@ -135,7 +141,6 @@ class PanelsFragment : Fragment() {
                             ::panelClickListener
                         )
                     )
-                    val recyclerView = requireView().findViewById<RecyclerView>(R.id.recyclerView)
                     recyclerView.adapter = dataAdapter
                     darkView.visibility = View.GONE
                     spinner.visibility = View.GONE

@@ -9,12 +9,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import com.example.memes.R
-import com.example.memes.activities.add.Consts
-
+import com.example.memes.activities.add.Consts.PHOTO_URL
 
 class ImageLoadDialogFragment : DialogFragment() {
 
-    private var onImageChosenListener: ((String) -> Unit)? = null
+    private lateinit var onImageChosenListener: ((String) -> Unit)
+    private lateinit var loadFromGalleryButton: Button
+    private lateinit var takePhotoButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,10 +28,12 @@ class ImageLoadDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val loadFromGalleryButton = view.findViewById<Button>(R.id.loadFromGalleryButton)
-        loadFromGalleryButton.setOnClickListener { _ -> loadFromGallery() }
-        val takePhotoButton = view.findViewById<Button>(R.id.takePhotoButton)
-        takePhotoButton.setOnClickListener { _ -> takePhoto() }
+
+        loadFromGalleryButton = view.findViewById(R.id.loadFromGalleryButton)
+        takePhotoButton = view.findViewById(R.id.takePhotoButton)
+
+        loadFromGalleryButton.setOnClickListener { loadFromGallery() }
+        takePhotoButton.setOnClickListener { takePhoto() }
     }
 
     fun setOnImageChosenListener(listener: (photoUrl: String) -> Unit) {
@@ -38,12 +41,12 @@ class ImageLoadDialogFragment : DialogFragment() {
     }
 
     private fun loadFromGallery() {
-        onImageChosenListener?.let { it(Consts.PHOTO_URL) }
+        onImageChosenListener(PHOTO_URL)
         dialog?.dismiss()
     }
 
     private fun takePhoto() {
-        onImageChosenListener?.let { it(Consts.PHOTO_URL) }
+        onImageChosenListener(PHOTO_URL)
         dialog?.dismiss()
     }
 }

@@ -3,12 +3,12 @@ package com.example.memes.network.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class Credentials {
+class Credentials (
     @SerializedName("login")
     @Expose
-    var login: String? = null
+    var login: String,
 
     @SerializedName("password")
     @Expose
-    var password: String? = null
-}
+    var password: String?
+)
