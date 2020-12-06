@@ -24,11 +24,22 @@
         <item name="colorOnSurface">@color/item_icon_tint_selector</item>
         <item name="bottomNavigationStyle">@style/Theme.Memes.BottomNavigationView</item>
     </style>
+
     <style name="Theme.Memes.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemIconTint">@color/item_icon_tint_selector</item>
     </style>
+
     <style name="Theme.Memes.Fab">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">21%</item>
+    </style>
+
+    <style name="Theme.Memes.PopupWindow" parent="Widget.AppCompat.PopupWindow">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/background2</item>
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 </resources>

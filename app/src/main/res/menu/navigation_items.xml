@@ -1,15 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_panels"
+        android:id="@+id/actionPanels"
         android:icon="@drawable/app_bar_panels"
         android:title="@string/panels" />
     <item
-        android:id="@+id/action_add"
+        android:id="@+id/actionAdd"
         android:icon="@drawable/app_bar_add"
-        android:title="@string/add"
-        android:iconTint="@color/error"/>
+        android:title="@string/add" />
     <item
-        android:id="@+id/action_profile"
+        android:id="@+id/actionProfile"
         android:icon="@drawable/app_bar_profile"
         android:title="@string/profile" />
 </menu>
