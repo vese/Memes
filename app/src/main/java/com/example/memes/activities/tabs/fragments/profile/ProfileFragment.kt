@@ -122,7 +122,7 @@ class ProfileFragment : Fragment() {
     }
 
     fun initialLoad() {
-        val result = dbHelper.getMemeList()
+        val result = dbHelper.getLocalMemeList()
         if (result.count() > 0) {
             loadFromDb(result)
         }
